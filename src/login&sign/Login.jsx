@@ -1,91 +1,72 @@
 // ./screen/login.js
-import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity, TextInput, Button, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import User from "../../User";
 
 export default function Login() {
   const navigation = useNavigation();
+  const [id, setId] = useState("");
+  const [pw, setPw] = useState("");
 
+  const handleLogin = () => {
+    // 로그인 버튼을 눌렀을 때만 id, pw를 출력
+    console.log(JSON.stringify({ id, pw }));
+    // 입력값 초기화
+    setId("");
+    setPw("");
+    // 여기에 실제 로그인 로직 추가 가능
+  };
 
-  const [id, setId] = React.useState([]);
-  const [pw, setPw] = React.useState([]);
-
-  useEffect(() => {
-    const user = new User(id, pw);
-    console.log(user);
-  }, [id, pw]);
-
-  const PrivateinformChange = () => {
-    console.log(pw);
-    console.log(id);
-    () => navigation.navigate("Main")
-  }
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TouchableOpacity>
-          <TextInput name="id" style={styles.Login} placeholder="아이디" onChangeText={setId}></TextInput>
-          <TextInput name="pw" style={styles.Password} placeholder="비밀번호" onChangeText={setPw}></TextInput>
-          <Button title="로그인" style={styles.loginButtonText} onPress={PrivateinformChange}></Button>
-        </TouchableOpacity>
-        <Button value="Sign Up" title="Sign Up" onPress={() => navigation.navigate("Signup")} style={styles.signupButton}>
-        </Button>
-      </View>
+      <Text style={styles.title}>로그인</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="아이디"
+        value={id}
+        onChangeText={setId}
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="비밀번호"
+        value={pw}
+        onChangeText={setPw}
+        secureTextEntry
+      />
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>로그인</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+        <Text style={styles.signupText}>회원가입</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  Login: {
-    height: 40,
+  container: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" },
+  title: { fontSize: 24, fontWeight: "bold", marginBottom: 30 },
+  input: {
+    width: 250,
+    height: 45,
+    borderColor: "#ccc",
     borderWidth: 1,
-    borderColor: '#ddd',
     borderRadius: 8,
-    paddingHorizontal: 15,
+    marginBottom: 15,
+    paddingHorizontal: 10,
     fontSize: 16,
-    backgroundColor: '#f9f9f9',
-    textAlign: 'center',
-    marginBottom: 10,
+    backgroundColor: "#f9f9f9",
   },
-  Password: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ddd',
+  button: {
+    width: 250,
+    height: 45,
+    backgroundColor: "green",
     borderRadius: 8,
-    paddingHorizontal: 15,
-    fontSize: 16,
-    backgroundColor: '#f9f9f9',
-    textAlign: 'center',
-    marginBottom: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 15,
   },
-  loginButton: {
-    height: 30,
-    width: 100,
-    textAlign: 'center',
-    backgroundColor: '#007AFF',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  loginButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  signupButton: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  signupText: {
-    color: '#007AFF',
-    fontSize: 16,
-  }
+  buttonText: { color: "#fff", fontSize: 18, fontWeight: "bold" },
+  signupText: { color: "green", fontSize: 16, marginTop: 10 },
 });
